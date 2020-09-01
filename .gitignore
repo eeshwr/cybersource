@@ -3,3 +3,5 @@
 payment_project/__pycache__/
 paymentapp/__pycache__/
 .vscode/
+paymentapp/migrations/__pycache__/
+paymentapp/migrations/__pycache__/
