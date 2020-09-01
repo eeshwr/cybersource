@@ -6,19 +6,19 @@ from uuid import uuid4
 from payment_project.settings import CYBERSOURCE_PROFILE_ID, CYBERSOURCE_ACCESS_KEY
 from paymentapp.utils import sign_fields
 from datetime import datetime
-from decimal import Decimal
+from rest_framework import status
 
 
 @api_view(["POST"])
 def sign(request):
     transaction_uuid = uuid4().hex
     transaction = CyberSourceTransaction()
-    transaction.transaction_uuid = transaction_uuid
+    transaction.uuid = transaction_uuid
     transaction.first_name = request.data.get("first_name")
     transaction.last_name = request.data.get("last_name")
     transaction.amount = request.data.get("amount")
     transaction.email = request.data.get("email")
-    transaction.payment_status = "pending"
+    transaction.payment_status = "PENDING"
     transaction.save()
 
     # Fields to pass to CyberSource - see manual for a full list
@@ -36,18 +36,17 @@ def sign(request):
     fields["reference_number"] = transaction.id
     data = sign_fields(fields)
 
-    return Response(data=data)
+    return Response(data=data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
 def webhook(request):
-    # DECISION can be ACCEPT, REVIEW, DECLINE, ERROR, or CANCEL.
-    # See page 152: http://apps.cybersource.com/library/documentation/dev_guides/Secure_Acceptance_WM/Secure_Acceptance_WM.pdf
     transaction = CyberSourceTransaction.objects.get(
-        id=request.POST.get("req_reference_number"),
-        uuid=request.POST.get("req_transaction_uuid"),
+        id=request.data.get("req_reference_number"),
+        uuid=request.data.get("req_transaction_uuid"),
     )
     transaction.cybersource_response_date = datetime.utcnow()
-    decision = request.POST.get("decision").upper()
+    decision = request.data.get("decision").upper()
     transaction.payment_status = decision
     transaction.save()
+    return Response(status=status.HTTP_200_OK)
