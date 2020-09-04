@@ -3,8 +3,6 @@ from hashlib import sha256
 import hmac
 from payment_project import settings
 
-# import requests
-
 
 def create_sha256_signature(key, message):
     digest = hmac.new(
@@ -28,16 +26,12 @@ def sign_fields(fields):
         data_to_sign.append(f"{key}={value}")
 
     context = {}
-    context["fields"] = fields
-    data = ",".join(data_to_sign)
-    context["signature"] = create_sha256_signature(
-        settings.CYBERSOURCE_SECRET_KEY, data
+    fields["signature"] = create_sha256_signature(
+        settings.CYBERSOURCE_SECRET_KEY, ",".join(data_to_sign)
     )
-    context["url"] = settings.CYBERSOURCE_TEST_URL
-
-    # fields["signature"] = context["signature"]
-
-    # payload = fields
-    # msg = requests.post(settings.CYBERSOURCE_TEST_URL, data=payload).url
-    # # the session instance holds the cookie. So use it to get/post later.)
+    context["url"] = settings.CYBERSOURCE_LIVE_URL
+    context["data"] = fields
     return context
+
+    # POST request -- for test
+    # msg = requests.post(settings.CYBERSOURCE_TEST_URL, data=fields)
