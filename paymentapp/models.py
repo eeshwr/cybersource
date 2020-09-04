@@ -1,6 +1,11 @@
 from django.db import models
 
 
+class Client(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+
 class CyberSourceTransaction(models.Model):
     id = models.BigAutoField(primary_key=True)
     uuid = models.CharField(max_length=32)
@@ -10,3 +15,4 @@ class CyberSourceTransaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_status = models.CharField(max_length=100)
     cybersource_response_date = models.DateTimeField(null=True, blank=True)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, default=1)
