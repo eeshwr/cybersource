@@ -2,7 +2,8 @@ from base64 import b64encode
 from hashlib import sha256
 import hmac
 from payment_project import settings
-import requests
+
+# import requests
 
 
 def create_sha256_signature(key, message):
@@ -38,5 +39,5 @@ def sign_fields(fields):
 
     # payload = fields
     # msg = requests.post(settings.CYBERSOURCE_TEST_URL, data=payload).url
-    # the session instance holds the cookie. So use it to get/post later.)
+    # # the session instance holds the cookie. So use it to get/post later.)
     return context
