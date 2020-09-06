@@ -2,6 +2,8 @@ from base64 import b64encode
 from hashlib import sha256
 import hmac
 from payment_project import settings
+from django.shortcuts import redirect
+import requests
 
 
 def create_sha256_signature(key, message):
@@ -29,9 +31,11 @@ def sign_fields(fields):
     fields["signature"] = create_sha256_signature(
         settings.CYBERSOURCE_SECRET_KEY, ",".join(data_to_sign)
     )
-    context["url"] = settings.CYBERSOURCE_LIVE_URL
+    context["url"] = settings.CYBERSOURCE_TEST_URL
     context["data"] = fields
     return context
 
     # POST request -- for test
-    # msg = requests.post(settings.CYBERSOURCE_TEST_URL, data=fields)
+
+    # url = requests.post(settings.CYBERSOURCE_TEST_URL, data=fields).content
+    # return url

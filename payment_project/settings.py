@@ -11,11 +11,17 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
+PROJECT_DIR = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+
+ROOT_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -25,7 +31,7 @@ SECRET_KEY = "*an525o6#l%^!@ckdehd+7@6^#pbspfm5-c+v_k-q=wztfgvou"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -125,11 +131,17 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+# Add these new lines
+STATICFILES_DIRS = (os.path.join(PROJECT_DIR, "static"),)
 
+STATIC_ROOT = os.path.join(ROOT_DIR, "static")
 # CyberSource settings
-CYBERSOURCE_PROFILE_ID = ""
-CYBERSOURCE_ACCESS_KEY = ""
-CYBERSOURCE_SECRET_KEY = ""
+# CYBERSOURCE_PROFILE_ID = ""
+# CYBERSOURCE_ACCESS_KEY = ""
+# CYBERSOURCE_SECRET_KEY = ""
+CYBERSOURCE_PROFILE_ID = "22236616-9E0D-401F-B802-9E351AE92147"
+CYBERSOURCE_ACCESS_KEY = "96c15918ad783ad2bd003caa948f2ffa"
+CYBERSOURCE_SECRET_KEY = "2c1c573dff79486e83a10eb5b582f9d4f5e0da8933694ea9906848947ec7759b10922e69ac424e368b8db14d62a712b59fdde187d71844a0b90f87afe02e95b82bf5abf816864be28f2402d178cf582625dd6c6beb9942e5889d527aa498c137e6e794051ed044aa9dad73bb0d0ae35e3506f9ca39384cd6ab054730ee84211f"
 CYBERSOURCE_TEST_URL = "https://testsecureacceptance.cybersource.com/pay"
 # for live
 CYBERSOURCE_LIVE_URL = "https://secureacceptance.cybersource.com/pay"

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+	<title>Payment</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{% static 'images/icons/Money-icon.png' %}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/iconic/css/material-design-iconic-font.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<!--===============================================================================================-->
+</head>
+
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" id="id_post_form">
+					{% csrf_token %}
+					<span class="login100-form-title p-b-26">
+						Payment Form
+					</span>
+
+					<div class="wrap-input100 validate-input" data-validate="Valid email is: a@b.c">
+						<input class="input100" type="text" name="email">
+						<span class="focus-input100" data-placeholder="Email"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter first name">
+						<input class="input100" type="text" name="first_name">
+						<span class="focus-input100" data-placeholder="First Name"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter last name">
+						<input class="input100" type="text" name="last_name">
+						<span class="focus-input100" data-placeholder="Last Name"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter amount">
+						<input class="input100" type="text" name="amount">
+						<span class="focus-input100" data-placeholder="Amount"></span>
+					</div>
+
+					<input class="input100" type="hidden" name="client" value="1">
+
+
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn">
+								Submit
+							</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="dropDownSelect1"></div>
+
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+	<!--===============================================================================================-->
+	<script src="{% static 'js/main.js' %}"></script>
+	<script>
+		$("#id_post_form").submit(function (event) {
+			event.preventDefault();
+
+			var form = $(this).serialize();
+			var url = "/sign/"
+			var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: form,
+				datatype: 'json',
+				processData: false,
+				headers: { 'X-CSRFToken': csrfToken },
+				success: function (response) {
+					post_to_cybersource(response.url, response.data)
+				}
+
+			});
+		});
+		// function post_to_cybersource(response) {
+		// 	var form_data = new FormData();
+		// 	item = response.data
+		// 	for (var key in item) {
+		// 		form_data.append(key, item[key]);
+		// 	}
+		// 	$.ajax({
+		// 		type: "POST",
+		// 		url: response.url,
+		// 		data: form_data,
+		// 		datatype: 'multipart/form-data',
+		// 		processData: false,
+		// 		contentType: false,
+		// 		cache: false,
+		// 		headers: {
+		// 			'content-type': 'multipart/form-data;boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+		// 			'cache-control': 'no-cache'
+		// 		},
+		// 		success: function (response) {
+		// 			alert(response)
+		// 		},
+		// 		error: function (response) {
+		// 			alert(response.error)
+
+		// 		}
+
+		// 	});
+		// }
+
+		function post_to_cybersource(path, params) {
+			var form = document.createElement("form");
+			form.setAttribute("method", 'POST');
+			form.setAttribute("action", path);
+
+			for (var key in params) {
+				if (params.hasOwnProperty(key)) {
+					var hiddenField = document.createElement("input");
+					hiddenField.setAttribute("type", "hidden");
+					hiddenField.setAttribute("name", key);
+					hiddenField.setAttribute("value", params[key]);
+
+					form.appendChild(hiddenField);
+				}
+			}
+
+			document.body.appendChild(form);
+			form.submit();
+		}
+	</script>
+</body>
+
+</html>

@@ -10,6 +10,7 @@ from payment_project.settings import (
 from paymentapp.utils import sign_fields
 from datetime import datetime
 from rest_framework import status
+from django.shortcuts import render
 
 
 @api_view(["POST"])
@@ -21,7 +22,7 @@ def sign2(request):
     transaction.last_name = request.data.get("last_name")
     transaction.amount = request.data.get("amount")
     transaction.email = request.data.get("email")
-    transaction.client = request.data.get("client")
+    # transaction.client = request.data.get("client")
     transaction.payment_status = "PENDING"
     transaction.save()
 
@@ -46,11 +47,11 @@ def sign2(request):
     fields["bill_to_forename"] = request.data.get("first_name")
     fields["bill_to_surname"] = request.data.get("last_name")
     fields["bill_to_email"] = request.data.get("email")
-    fields["bill_to_phone"] = request.data.get("phone")
-    fields["bill_to_address_line1"] = request.data.get("address")
-    fields["bill_to_address_city"] = request.data.get("city")
+    fields["bill_to_phone"] = ""
+    fields["bill_to_address_line1"] = ""
+    fields["bill_to_address_city"] = ""
     fields["bill_to_address_state"] = "N/A"
-    fields["bill_to_address_country"] = request.data.get("country")
+    fields["bill_to_address_country"] = ""
     fields["bill_to_address_postal_code"] = "N/A"
     fields["card_type"] = "001"
     fields["card_number"] = ""
@@ -114,6 +115,9 @@ def sign(request):
     fields["card_number"] = ""
     fields["card_expiry_date"] = ""
     fields["signature"] = ""
-    data = sign_fields(fields)
+    return Response(data=sign_fields(fields), status=status.HTTP_200_OK)
 
-    return Response(data=data, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+def home(request):
+    return render(request, template_name="index.html")
