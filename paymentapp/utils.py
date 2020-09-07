@@ -2,8 +2,6 @@ from base64 import b64encode
 from hashlib import sha256
 import hmac
 from payment_project import settings
-from django.shortcuts import redirect
-import requests
 
 
 def create_sha256_signature(key, message):
