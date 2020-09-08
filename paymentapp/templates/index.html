@@ -101,6 +101,9 @@
 	<script>
 		$("#id_post_form").submit(function (event) {
 			event.preventDefault();
+			if (!validate_form()) {
+				return false;
+			}
 
 			var form = $(this).serialize();
 			var url = "/sign/"
@@ -136,6 +139,30 @@
 
 			document.body.appendChild(form);
 			form.submit();
+		}
+
+		function validate_form() {
+			var first_name = $('#first_name').val();
+			var last_name = $('#last_name').val();
+			var email = $('#email').val();
+			var amount = $('#amount').val();
+
+			if (first_name == '' || last_name == '' || email == '' || amount == '') {
+				return false;
+			}
+			if (IsEmail(email) == false) {
+				return false;
+			}
+
+		}
+
+		function IsEmail(email) {
+			var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+			if (!regex.test(email)) {
+				return false;
+			} else {
+				return true;
+			}
 		}
 	</script>
 </body>
