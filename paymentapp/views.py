@@ -85,50 +85,6 @@ def webhook(request):
     transaction.save()
     return Response(status=status.HTTP_200_OK)
 
-
-# @api_view(["POST"])
-# def sign2(request):
-
-#     client = Client.objects.get(
-#         id="8d241c06-364b-40bc-8b85-34d8543eb230",
-#     )
-
-#     transaction_uuid = uuid4()
-#     transaction = CyberSourceTransaction()
-#     transaction.transaction_id = transaction_uuid
-#     transaction.first_name = request.data.get("first_name")
-#     transaction.last_name = request.data.get("last_name")
-#     transaction.amount = request.data.get("amount")
-#     transaction.email = request.data.get("email")
-#     transaction.client = client
-#     transaction.payment_status = "PENDING"
-#     transaction.save()
-
-#     # Fields to pass to CyberSource
-#     signed = "access_key,profile_id,signed_field_names,unsigned_field_names,locale,transaction_uuid,signed_date_time,transaction_type,reference_number,amount,currency,payment_method"
-#     unsigned = "card_type,card_number,card_expiry_date"
-#     fields = {}
-#     fields["access_key"] = CYBERSOURCE_ACCESS_KEY
-#     fields["profile_id"] = CYBERSOURCE_PROFILE_ID
-#     fields["signed_field_names"] = signed
-#     fields["unsigned_field_names"] = unsigned
-#     fields["locale"] = "en-us"
-#     fields["transaction_uuid"] = transaction_uuid
-#     fields["signed_date_time"] = (
-#         str(datetime.utcnow().isoformat(timespec="seconds")) + "Z"
-#     )
-#     fields["transaction_type"] = "sale"
-#     fields["reference_number"] = "7861063289"
-#     fields["amount"] = "100.00"
-#     fields["currency"] = "USD"
-#     fields["payment_method"] = "card"
-#     fields["card_type"] = "001"
-#     fields["card_number"] = ""
-#     fields["card_expiry_date"] = ""
-#     fields["signature"] = ""
-#     return Response(data=sign_fields(fields), status=status.HTTP_200_OK)
-
-
 @api_view(["GET"])
 def home(request):
     return render(request, template_name="index.html")
