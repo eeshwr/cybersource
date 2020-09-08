@@ -101,9 +101,7 @@
 	<script>
 		$("#id_post_form").submit(function (event) {
 			event.preventDefault();
-			if (!validate_form()) {
-				return false;
-			}
+
 
 			var form = $(this).serialize();
 			var url = "/sign/"
