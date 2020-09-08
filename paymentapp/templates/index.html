@@ -66,7 +66,6 @@
 	<script>
 		$("#id_post_form").submit(function (event) {
 			event.preventDefault();
-			email = $("#email").val();
 			var form = $(this).serialize();
 			var url = "/sign/"
 			var csrfToken = $('input[name="csrfmiddlewaretoken"]').val()
