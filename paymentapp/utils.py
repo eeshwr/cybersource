@@ -29,7 +29,7 @@ def sign_fields(fields):
     fields["signature"] = create_sha256_signature(
         settings.CYBERSOURCE_SECRET_KEY, ",".join(data_to_sign)
     )
-    context["url"] = settings.CYBERSOURCE_TEST_URL
+    context["url"] = settings.CYBERSOURCE_LIVE_URL
     context["data"] = fields
     return context
 

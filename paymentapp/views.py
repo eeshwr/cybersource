@@ -49,7 +49,7 @@ def sign(request):
         (lambda x: randint(10 ** (x - 1), (10 ** x) - 1))(10)
     )
     fields["amount"] = request.data.get("amount")
-    fields["currency"] = "USD"
+    fields["currency"] = "AUD"
     fields["payment_method"] = "card"
     fields["bill_to_forename"] = request.data.get("first_name")
     fields["bill_to_surname"] = request.data.get("last_name")
@@ -58,7 +58,7 @@ def sign(request):
     fields["bill_to_address_line1"] = "N/A"
     fields["bill_to_address_city"] = "N/A"
     fields["bill_to_address_state"] = "N/A"
-    fields["bill_to_address_country"] = "NP"
+    fields["bill_to_address_country"] = "AU"
     fields["bill_to_address_postal_code"] = "N/A"
     fields["card_type"] = "001"
     fields["card_number"] = ""
